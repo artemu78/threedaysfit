@@ -26,7 +26,9 @@ export const workoutProgram: WorkoutDay[] = [
           "Lower bar to chest with control",
           "Press up explosively, keeping core tight",
           "Keep shoulder blades retracted throughout"
-        ]
+        ],
+        image: "./images/day1/Barbell-Bench-Press.gif",
+        details: "https://fitnessprogramer.com/exercise/bench-press/"
       },
       {
         name: "Dumbbell Rows",
@@ -42,7 +44,9 @@ export const workoutProgram: WorkoutDay[] = [
           "Squeeze shoulder blades together",
           "Lower with control",
           "Keep core engaged throughout"
-        ]
+        ],
+        image: "./images/day1/Dumbbell-Row.gif",
+        details: "https://fitnessprogramer.com/exercise/dumbbell-row/"
       },
       {
         name: "Overhead Press",
@@ -58,7 +62,9 @@ export const workoutProgram: WorkoutDay[] = [
           "Press overhead in straight line",
           "Keep core tight, don't arch back",
           "Lower with control to starting position"
-        ]
+        ],
+        image: "./images/day1/Barbell-Standing-Military-Press.gif",
+        details: "https://fitnessprogramer.com/exercise/barbell-military-press/"
       },
       {
         name: "Dumbbell Curls",
@@ -73,7 +79,9 @@ export const workoutProgram: WorkoutDay[] = [
           "Curl weights up with control",
           "Squeeze at the top",
           "Lower slowly to starting position"
-        ]
+        ],
+        image: "./images/day1/Dumbbell-Curl.gif",
+        details: "https://fitnessprogramer.com/exercise/dumbbell-curl/"
       }
     ]
   },
@@ -102,7 +110,9 @@ export const workoutProgram: WorkoutDay[] = [
           "Keep elbows close to body",
           "Squeeze shoulder blades at top",
           "Lower with control"
-        ]
+        ],
+        image: "./images/day2/Barbell-Bent-Over-Row.gif",
+        details: "https://fitnessprogramer.com/exercise/barbell-bent-over-row/"
       },
       {
         name: "Single-arm Dumbbell Rows",
@@ -118,7 +128,9 @@ export const workoutProgram: WorkoutDay[] = [
           "Keep back straight and core tight",
           "Focus on lat engagement",
           "Complete all reps before switching sides"
-        ]
+        ],
+        image: "./images/day2/Dumbbell-Row.gif",
+        details: "https://fitnessprogramer.com/exercise/dumbbell-row/"
       },
       {
         name: "Face Pulls (Reverse Fly)",
@@ -134,7 +146,9 @@ export const workoutProgram: WorkoutDay[] = [
           "Focus on rear delt activation",
           "Keep slight bend in elbows",
           "Lower with control"
-        ]
+        ],
+        image: "./images/day2/Bent-Over-Lateral-Raise.gif",
+        details: "https://fitnessprogramer.com/exercise/bent-over-lateral-raise/"
       },
       {
         name: "Plank Hold",
@@ -150,7 +164,9 @@ export const workoutProgram: WorkoutDay[] = [
           "Engage core and glutes",
           "Don't let hips sag or pike up",
           "Breathe steadily throughout hold"
-        ]
+        ],
+        image: "./images/day2/plank.gif",
+        details: "https://fitnessprogramer.com/exercise/plank/"
       }
     ]
   },
@@ -179,7 +195,9 @@ export const workoutProgram: WorkoutDay[] = [
           "Lower until thighs parallel to floor",
           "Drive through heels to stand",
           "Keep knees tracking over toes"
-        ]
+        ],
+        image: "./images/day3/BARBELL-SQUAT.gif",
+        details: "https://fitnessprogramer.com/exercise/squat/"
       },
       {
         name: "Romanian Deadlifts",
@@ -195,7 +213,9 @@ export const workoutProgram: WorkoutDay[] = [
           "Keep bar close to legs",
           "Feel stretch in hamstrings",
           "Drive hips forward to return to start"
-        ]
+        ],
+        image: "./images/day3/Barbell-Romanian-Deadlift.gif",
+        details: "https://fitnessprogramer.com/exercise/romanian-deadlift/"
       },
       {
         name: "Dumbbell Lunges",
@@ -211,7 +231,9 @@ export const workoutProgram: WorkoutDay[] = [
           "Keep front knee over ankle",
           "Push through front heel to return",
           "Alternate legs or complete one side first"
-        ]
+        ],
+        image: "./images/day3/dumbbell-lunges.gif",
+        details: "https://fitnessprogramer.com/exercise/dumbbell-walking-lunge/"
       },
       {
         name: "Calf Raises",
@@ -226,7 +248,9 @@ export const workoutProgram: WorkoutDay[] = [
           "Squeeze calves at the top",
           "Lower slowly with control",
           "Use a step for increased range of motion"
-        ]
+        ],
+        image: "./images/day3/Dumbbell-Calf-Raise.gif",
+        details: "https://fitnessprogramer.com/exercise/calf-raise/"
       }
     ]
   }

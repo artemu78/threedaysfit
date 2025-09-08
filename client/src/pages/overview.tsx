@@ -180,8 +180,8 @@ export default function Overview() {
               <ul className="space-y-1 text-sm text-muted-foreground">
                 <li>• Start with comfortable weights</li>
                 <li>• Increase weight when you complete all sets</li>
-                <li>• Add 2.5-5lbs for upper body</li>
-                <li>• Add 5-10lbs for lower body</li>
+                <li>• Add 1-2kg for upper body</li>
+                <li>• Add 2-4kg for lower body</li>
               </ul>
             </div>
           </div>

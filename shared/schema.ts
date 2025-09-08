@@ -21,6 +21,8 @@ export const exerciseSchema = z.object({
   rest: z.string(),
   instructions: z.array(z.string()),
   imageAlt: z.string(),
+  image: z.string().optional(),
+  details: z.string().optional(),
 });
 
 export const workoutDaySchema = z.object({

@@ -18,7 +18,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
       <CardContent className="p-4">
         <div className="flex flex-col lg:flex-row gap-4">
           <img
-            src={`https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300`}
+            src={exercise.image || './images/exercise_icon.gif'}
             alt={exercise.imageAlt}
             className="w-full lg:w-48 h-32 object-cover rounded-lg"
             data-testid={`exercise-image-${index}`}
