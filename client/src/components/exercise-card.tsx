@@ -146,14 +146,17 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
               Primary: {exercise.primaryMuscles}
               {exercise.secondaryMuscles && `, Secondary: ${exercise.secondaryMuscles}`}
             </p>
-            <div className="grid grid-cols-3 gap-4 mb-3">
-              <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-sets-${index}`}>
-                <div className="font-bold text-primary">{exercise.sets}</div>
-                <div className="text-xs text-muted-foreground">Sets</div>
-              </div>
-              <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-reps-${index}`}>
-                <div className="font-bold text-primary">{exercise.reps}</div>
-                <div className="text-xs text-muted-foreground">Reps</div>
+            <div className="grid grid-cols-2 gap-4 mb-3">
+              <div className="grid grid-cols-2 mb-3">
+
+                <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-sets-${index}`}>
+                  <div className="font-bold text-primary">{exercise.sets}</div>
+                  <div className="text-xs text-muted-foreground">Sets</div>
+                </div>
+                <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-reps-${index}`}>
+                  <div className="font-bold text-primary">{exercise.reps}</div>
+                  <div className="text-xs text-muted-foreground">Reps</div>
+                </div>
               </div>
               <div className="text-center relative" data-testid={`exercise-rest-${index}`}>
                 <div className="p-2 bg-muted rounded h-[60px] flex items-center justify-center relative">
@@ -161,11 +164,11 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                     variant={isTimerComplete ? "default" : isTimerActive ? "secondary" : "outline"}
                     size="sm"
                     onClick={timeLeft === 0 ? startTimer : isTimerActive ? pauseTimer : startTimer}
-                    className={`w-full h-10 flex flex-col items-center justify-center relative overflow-hidden transition-all duration-300 ${isTimerComplete
-                        ? "bg-green-500 hover:bg-green-600 text-white animate-pulse"
-                        : isTimerActive
-                          ? "bg-yellow-500 hover:bg-yellow-600 text-white"
-                          : "hover:bg-primary hover:text-primary-foreground"
+                    className={`w-full h-10 flex items-center justify-center relative overflow-hidden transition-all duration-300 ${isTimerComplete
+                      ? "bg-green-500 hover:bg-green-600 text-white animate-pulse"
+                      : isTimerActive
+                        ? "bg-yellow-500 hover:bg-yellow-600 text-white"
+                        : "hover:bg-primary hover:text-primary-foreground"
                       }`}
                     data-testid={`timer-button-${index}`}
                   >
@@ -181,13 +184,10 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                       ) : (
                         <Pause className="w-3 h-3" />
                       )}
-                      <span className="font-bold text-xs">
-                        {timeLeft > 0 ? formatTime(timeLeft) : exercise.rest}
-                      </span>
                     </div>
-                    <div className="text-xs opacity-75">
-                      {isTimerComplete ? "Complete!" : isTimerActive ? "Rest Timer" : "Rest"}
-                    </div>
+                    <span className="font-bold text-xs">
+                      {timeLeft > 0 ? formatTime(timeLeft) : exercise.rest}
+                    </span>
                   </Button>
                   {(isTimerActive || timeLeft > 0) && (
                     <Button
@@ -201,10 +201,9 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                     </Button>
                   )}
                 </div>
-                <div className="text-xs text-muted-foreground mt-1">Rest</div>
               </div>
             </div>
-            
+
             {/* Sets Checkboxes */}
             <div className="mb-3" data-testid={`exercise-sets-checkboxes-${index}`}>
               <h5 className="text-sm font-medium mb-2">Track Completed Sets:</h5>
@@ -217,8 +216,8 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                       onCheckedChange={(checked) => handleSetCompletion(i, !!checked)}
                       data-testid={`checkbox-set-${index}-${i}`}
                     />
-                    <label 
-                      htmlFor={`set-${index}-${i}`} 
+                    <label
+                      htmlFor={`set-${index}-${i}`}
                       className="text-sm font-medium cursor-pointer"
                     >
                       Set {i + 1}
