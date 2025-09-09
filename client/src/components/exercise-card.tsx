@@ -132,54 +132,56 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                 <div className="font-bold text-primary">{exercise.reps}</div>
                 <div className="text-xs text-muted-foreground">Reps</div>
               </div>
-              <div className="text-center" data-testid={`exercise-rest-${index}`}>
-                <Button
-                  variant={isTimerComplete ? "default" : isTimerActive ? "secondary" : "outline"}
-                  size="sm"
-                  onClick={timeLeft === 0 ? startTimer : isTimerActive ? pauseTimer : startTimer}
-                  className={`w-full h-12 flex flex-col items-center justify-center relative overflow-hidden transition-all duration-300 ${
-                    isTimerComplete 
-                      ? "bg-green-500 hover:bg-green-600 text-white animate-pulse" 
-                      : isTimerActive 
-                        ? "bg-yellow-500 hover:bg-yellow-600 text-white" 
-                        : "hover:bg-primary hover:text-primary-foreground"
-                  }`}
-                  data-testid={`timer-button-${index}`}
-                >
-                  {isTimerActive && timeLeft > 0 && (
-                    <div 
-                      className="absolute bottom-0 left-0 h-1 bg-red-500 transition-all duration-1000 ease-linear"
-                      style={{ width: `${((restTimeInSeconds - timeLeft) / restTimeInSeconds) * 100}%` }}
-                    />
-                  )}
-                  <div className="flex items-center space-x-1">
-                    {timeLeft === 0 ? (
-                      <Play className="w-3 h-3" />
-                    ) : isTimerActive ? (
-                      <Pause className="w-3 h-3" />
-                    ) : (
-                      <Play className="w-3 h-3" />
-                    )}
-                    <span className="font-bold text-xs">
-                      {timeLeft > 0 ? formatTime(timeLeft) : exercise.rest}
-                    </span>
-                  </div>
-                  <div className="text-xs opacity-75">
-                    {isTimerComplete ? "Complete!" : isTimerActive ? "Rest Timer" : "Rest"}
-                  </div>
-                </Button>
-                {(isTimerActive || timeLeft > 0) && (
+              <div className="text-center relative" data-testid={`exercise-rest-${index}`}>
+                <div className="p-2 bg-muted rounded h-[60px] flex items-center justify-center relative">
                   <Button
-                    variant="ghost"
+                    variant={isTimerComplete ? "default" : isTimerActive ? "secondary" : "outline"}
                     size="sm"
-                    onClick={resetTimer}
-                    className="w-full h-6 mt-1 text-xs"
-                    data-testid={`timer-reset-${index}`}
+                    onClick={timeLeft === 0 ? startTimer : isTimerActive ? pauseTimer : startTimer}
+                    className={`w-full h-10 flex flex-col items-center justify-center relative overflow-hidden transition-all duration-300 ${
+                      isTimerComplete 
+                        ? "bg-green-500 hover:bg-green-600 text-white animate-pulse" 
+                        : isTimerActive 
+                          ? "bg-yellow-500 hover:bg-yellow-600 text-white" 
+                          : "hover:bg-primary hover:text-primary-foreground"
+                    }`}
+                    data-testid={`timer-button-${index}`}
                   >
-                    <RotateCcw className="w-3 h-3 mr-1" />
-                    Reset
+                    {isTimerActive && timeLeft > 0 && (
+                      <div 
+                        className="absolute bottom-0 left-0 h-1 bg-red-500 transition-all duration-1000 ease-linear"
+                        style={{ width: `${((restTimeInSeconds - timeLeft) / restTimeInSeconds) * 100}%` }}
+                      />
+                    )}
+                    <div className="flex items-center space-x-1">
+                      {timeLeft === 0 ? (
+                        <Play className="w-3 h-3" />
+                      ) : isTimerActive ? (
+                        <Pause className="w-3 h-3" />
+                      ) : (
+                        <Play className="w-3 h-3" />
+                      )}
+                      <span className="font-bold text-xs">
+                        {timeLeft > 0 ? formatTime(timeLeft) : exercise.rest}
+                      </span>
+                    </div>
+                    <div className="text-xs opacity-75">
+                      {isTimerComplete ? "Complete!" : isTimerActive ? "Rest Timer" : "Rest"}
+                    </div>
                   </Button>
-                )}
+                  {(isTimerActive || timeLeft > 0) && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={resetTimer}
+                      className="absolute -top-1 -right-1 w-6 h-6 p-0 rounded-full bg-background border border-border hover:bg-muted"
+                      data-testid={`timer-reset-${index}`}
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                    </Button>
+                  )}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">Rest</div>
               </div>
             </div>
             <Collapsible open={showInstructions} onOpenChange={setShowInstructions}>
