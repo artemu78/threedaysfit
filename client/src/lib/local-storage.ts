@@ -1,6 +1,6 @@
 import { WorkoutLog } from "@shared/schema";
 
-const WORKOUT_LOGS_KEY = "homegym-workout-logs";
+const WORKOUT_LOGS_KEY = "3daysfit-workout-logs";
 
 export const saveWorkoutLog = (log: Omit<WorkoutLog, "id" | "createdAt">): WorkoutLog => {
   const logs = getWorkoutLogs();

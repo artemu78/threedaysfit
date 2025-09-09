@@ -1,8 +1,8 @@
-# HomeGym Pro - 3-Day Workout Tracker
+# 3 Days Fit - 3-Day Workout Tracker
 
 ## Overview
 
-HomeGym Pro is a comprehensive fitness tracking application designed for home gym enthusiasts. The application provides a structured 3-day workout program (Upper Body, Back & Core, Legs & Glutes) and allows users to log their workout sessions locally without requiring authentication. Built as a full-stack application with a React frontend and Express backend, it focuses on simplicity and privacy by storing workout data in the browser's local storage.
+3 Days Fit is a comprehensive fitness tracking application designed for home gym enthusiasts. The application provides a structured 3-day workout program (Upper Body, Back & Core, Legs & Glutes) and allows users to log their workout sessions locally without requiring authentication. Built as a full-stack application with a React frontend and Express backend, it focuses on simplicity and privacy by storing workout data in the browser's local storage.
 
 ## User Preferences
 

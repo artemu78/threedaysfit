@@ -28,7 +28,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
 
   useEffect(() => {
     // Create audio for timer completion
-    audioRef.current = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+Lvv2IcBj+Y3PLDciQFLYDN8tiJOQgZZ7zs559NEAxPp+Lwtb');
+    audioRef.current = new Audio('../sounds/1time_beep.mp3');
     
     return () => {
       if (intervalRef.current) {
@@ -123,7 +123,8 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
               Primary: {exercise.primaryMuscles}
               {exercise.secondaryMuscles && `, Secondary: ${exercise.secondaryMuscles}`}
             </p>
-            <div className="grid grid-cols-3 gap-4 mb-3">
+            <div className="grid grid-cols-2 gap-4 mb-3">
+            <div className="grid grid-cols-2 mb-3">
               <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-sets-${index}`}>
                 <div className="font-bold text-primary">{exercise.sets}</div>
                 <div className="text-xs text-muted-foreground">Sets</div>
@@ -131,6 +132,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
               <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-reps-${index}`}>
                 <div className="font-bold text-primary">{exercise.reps}</div>
                 <div className="text-xs text-muted-foreground">Reps</div>
+              </div>
               </div>
               <div className="text-center relative" data-testid={`exercise-rest-${index}`}>
                 <div className="p-2 bg-muted rounded h-[60px] flex items-center justify-center relative">
@@ -154,19 +156,14 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                       />
                     )}
                     <div className="flex items-center space-x-1">
-                      {timeLeft === 0 ? (
+                      {timeLeft === 0 || !isTimerActive ? (
                         <Play className="w-3 h-3" />
-                      ) : isTimerActive ? (
-                        <Pause className="w-3 h-3" />
                       ) : (
-                        <Play className="w-3 h-3" />
-                      )}
+                        <Pause className="w-3 h-3" />
+                      ) }
                       <span className="font-bold text-xs">
                         {timeLeft > 0 ? formatTime(timeLeft) : exercise.rest}
                       </span>
-                    </div>
-                    <div className="text-xs opacity-75">
-                      {isTimerComplete ? "Complete!" : isTimerActive ? "Rest Timer" : "Rest"}
                     </div>
                   </Button>
                   {(isTimerActive || timeLeft > 0) && (
@@ -181,7 +178,6 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                     </Button>
                   )}
                 </div>
-                <div className="text-xs text-muted-foreground mt-1">Rest</div>
               </div>
             </div>
             <Collapsible open={showInstructions} onOpenChange={setShowInstructions}>
