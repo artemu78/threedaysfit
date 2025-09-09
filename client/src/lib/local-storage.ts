@@ -1,6 +1,7 @@
 import { WorkoutLog } from "@shared/schema";
 
 const WORKOUT_LOGS_KEY = "3daysfit-workout-logs";
+const EXERCISE_SETS_KEY = "3daysfit-exercise-sets";
 
 export const saveWorkoutLog = (log: Omit<WorkoutLog, "id" | "createdAt">): WorkoutLog => {
   const logs = getWorkoutLogs();
@@ -64,4 +65,43 @@ export const getWorkoutStats = () => {
     currentStreak,
     avgWeekly: Math.round(avgWeekly * 10) / 10,
   };
+};
+
+// Exercise Sets Tracking
+interface ExerciseSetState {
+  [date: string]: {
+    [exerciseName: string]: boolean[];
+  };
+}
+
+export const saveExerciseSetCompletion = (exerciseName: string, setIndex: number, completed: boolean): void => {
+  const today = new Date().toISOString().split('T')[0];
+  const exerciseSets = getExerciseSets();
+  
+  if (!exerciseSets[today]) {
+    exerciseSets[today] = {};
+  }
+  
+  if (!exerciseSets[today][exerciseName]) {
+    exerciseSets[today][exerciseName] = [];
+  }
+  
+  exerciseSets[today][exerciseName][setIndex] = completed;
+  localStorage.setItem(EXERCISE_SETS_KEY, JSON.stringify(exerciseSets));
+};
+
+export const getExerciseSets = (): ExerciseSetState => {
+  try {
+    const stored = localStorage.getItem(EXERCISE_SETS_KEY);
+    return stored ? JSON.parse(stored) : {};
+  } catch (error) {
+    console.error("Error parsing exercise sets:", error);
+    return {};
+  }
+};
+
+export const getTodayExerciseSets = (exerciseName: string): boolean[] => {
+  const today = new Date().toISOString().split('T')[0];
+  const exerciseSets = getExerciseSets();
+  return exerciseSets[today]?.[exerciseName] || [];
 };

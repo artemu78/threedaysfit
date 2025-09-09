@@ -2,8 +2,10 @@ import { Exercise } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Info, Play, Pause, RotateCcw } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import { saveExerciseSetCompletion, getTodayExerciseSets } from "@/lib/local-storage";
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -15,6 +17,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [isTimerComplete, setIsTimerComplete] = useState(false);
+  const [completedSets, setCompletedSets] = useState<boolean[]>([]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -30,12 +33,22 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
     // Create audio for timer completion
     audioRef.current = new Audio('../sounds/1time_beep.mp3');
 
+    // Load today's completed sets
+    const todaySets = getTodayExerciseSets(exercise.name);
+    const initialSets = Array(exercise.sets).fill(false);
+    for (let i = 0; i < todaySets.length; i++) {
+      if (i < initialSets.length) {
+        initialSets[i] = todaySets[i];
+      }
+    }
+    setCompletedSets(initialSets);
+
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, []);
+  }, [exercise.name, exercise.sets]);
 
   useEffect(() => {
     if (isTimerActive && timeLeft > 0) {
@@ -105,6 +118,13 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const handleSetCompletion = (setIndex: number, completed: boolean) => {
+    const newCompletedSets = [...completedSets];
+    newCompletedSets[setIndex] = completed;
+    setCompletedSets(newCompletedSets);
+    saveExerciseSetCompletion(exercise.name, setIndex, completed);
+  };
+
   return (
     <Card className="border border-border" data-testid={`exercise-card-${index}`}>
       <CardContent className="p-4">
@@ -126,16 +146,14 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
               Primary: {exercise.primaryMuscles}
               {exercise.secondaryMuscles && `, Secondary: ${exercise.secondaryMuscles}`}
             </p>
-            <div className="grid grid-cols-2 gap-4 mb-3">
-              <div className="grid grid-cols-2 mb-3">
-                <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-sets-${index}`}>
-                  <div className="font-bold text-primary">{exercise.sets}</div>
-                  <div className="text-xs text-muted-foreground">Sets</div>
-                </div>
-                <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-reps-${index}`}>
-                  <div className="font-bold text-primary">{exercise.reps}</div>
-                  <div className="text-xs text-muted-foreground">Reps</div>
-                </div>
+            <div className="grid grid-cols-3 gap-4 mb-3">
+              <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-sets-${index}`}>
+                <div className="font-bold text-primary">{exercise.sets}</div>
+                <div className="text-xs text-muted-foreground">Sets</div>
+              </div>
+              <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-reps-${index}`}>
+                <div className="font-bold text-primary">{exercise.reps}</div>
+                <div className="text-xs text-muted-foreground">Reps</div>
               </div>
               <div className="text-center relative" data-testid={`exercise-rest-${index}`}>
                 <div className="p-2 bg-muted rounded h-[60px] flex items-center justify-center relative">
@@ -167,6 +185,9 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                         {timeLeft > 0 ? formatTime(timeLeft) : exercise.rest}
                       </span>
                     </div>
+                    <div className="text-xs opacity-75">
+                      {isTimerComplete ? "Complete!" : isTimerActive ? "Rest Timer" : "Rest"}
+                    </div>
                   </Button>
                   {(isTimerActive || timeLeft > 0) && (
                     <Button
@@ -180,6 +201,33 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                     </Button>
                   )}
                 </div>
+                <div className="text-xs text-muted-foreground mt-1">Rest</div>
+              </div>
+            </div>
+            
+            {/* Sets Checkboxes */}
+            <div className="mb-3" data-testid={`exercise-sets-checkboxes-${index}`}>
+              <h5 className="text-sm font-medium mb-2">Track Completed Sets:</h5>
+              <div className="flex flex-wrap gap-2">
+                {Array.from({ length: exercise.sets }, (_, i) => (
+                  <div key={i} className="flex items-center space-x-2 p-2 bg-muted rounded-lg">
+                    <Checkbox
+                      id={`set-${index}-${i}`}
+                      checked={completedSets[i] || false}
+                      onCheckedChange={(checked) => handleSetCompletion(i, !!checked)}
+                      data-testid={`checkbox-set-${index}-${i}`}
+                    />
+                    <label 
+                      htmlFor={`set-${index}-${i}`} 
+                      className="text-sm font-medium cursor-pointer"
+                    >
+                      Set {i + 1}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              <div className="text-xs text-muted-foreground mt-1">
+                Completed: {completedSets.filter(Boolean).length} / {exercise.sets}
               </div>
             </div>
             <Collapsible open={showInstructions} onOpenChange={setShowInstructions}>
