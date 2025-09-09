@@ -2,8 +2,8 @@ import { Exercise } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Info } from "lucide-react";
-import { useState } from "react";
+import { Info, Play, Pause, RotateCcw } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -12,6 +12,98 @@ interface ExerciseCardProps {
 
 export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
   const [showInstructions, setShowInstructions] = useState(false);
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [isTimerComplete, setIsTimerComplete] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Parse rest time to seconds
+  const parseRestTime = (restString: string): number => {
+    const match = restString.match(/(\d+)/);
+    return match ? parseInt(match[1]) : 60;
+  };
+
+  const restTimeInSeconds = parseRestTime(exercise.rest);
+
+  useEffect(() => {
+    // Create audio for timer completion
+    audioRef.current = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+Lvv2IcBj+Y3PLDciQFLYDN8tiJOQgZZ7zs559NEAxPp+Lwtb');
+    
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isTimerActive && timeLeft > 0) {
+      intervalRef.current = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            setIsTimerActive(false);
+            setIsTimerComplete(true);
+            // Play sound when timer completes
+            if (audioRef.current) {
+              audioRef.current.play().catch(() => {
+                // Fallback: create a beep sound using Web Audio API
+                const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+              });
+            }
+            setTimeout(() => setIsTimerComplete(false), 3000);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isTimerActive, timeLeft]);
+
+  const startTimer = () => {
+    setTimeLeft(restTimeInSeconds);
+    setIsTimerActive(true);
+    setIsTimerComplete(false);
+  };
+
+  const pauseTimer = () => {
+    setIsTimerActive(false);
+  };
+
+  const resetTimer = () => {
+    setIsTimerActive(false);
+    setTimeLeft(0);
+    setIsTimerComplete(false);
+  };
+
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   return (
     <Card className="border border-border" data-testid={`exercise-card-${index}`}>
@@ -40,9 +132,54 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                 <div className="font-bold text-primary">{exercise.reps}</div>
                 <div className="text-xs text-muted-foreground">Reps</div>
               </div>
-              <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-rest-${index}`}>
-                <div className="font-bold text-primary">{exercise.rest}</div>
-                <div className="text-xs text-muted-foreground">Rest</div>
+              <div className="text-center" data-testid={`exercise-rest-${index}`}>
+                <Button
+                  variant={isTimerComplete ? "default" : isTimerActive ? "secondary" : "outline"}
+                  size="sm"
+                  onClick={timeLeft === 0 ? startTimer : isTimerActive ? pauseTimer : startTimer}
+                  className={`w-full h-12 flex flex-col items-center justify-center relative overflow-hidden transition-all duration-300 ${
+                    isTimerComplete 
+                      ? "bg-green-500 hover:bg-green-600 text-white animate-pulse" 
+                      : isTimerActive 
+                        ? "bg-yellow-500 hover:bg-yellow-600 text-white" 
+                        : "hover:bg-primary hover:text-primary-foreground"
+                  }`}
+                  data-testid={`timer-button-${index}`}
+                >
+                  {isTimerActive && timeLeft > 0 && (
+                    <div 
+                      className="absolute bottom-0 left-0 h-1 bg-red-500 transition-all duration-1000 ease-linear"
+                      style={{ width: `${((restTimeInSeconds - timeLeft) / restTimeInSeconds) * 100}%` }}
+                    />
+                  )}
+                  <div className="flex items-center space-x-1">
+                    {timeLeft === 0 ? (
+                      <Play className="w-3 h-3" />
+                    ) : isTimerActive ? (
+                      <Pause className="w-3 h-3" />
+                    ) : (
+                      <Play className="w-3 h-3" />
+                    )}
+                    <span className="font-bold text-xs">
+                      {timeLeft > 0 ? formatTime(timeLeft) : exercise.rest}
+                    </span>
+                  </div>
+                  <div className="text-xs opacity-75">
+                    {isTimerComplete ? "Complete!" : isTimerActive ? "Rest Timer" : "Rest"}
+                  </div>
+                </Button>
+                {(isTimerActive || timeLeft > 0) && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={resetTimer}
+                    className="w-full h-6 mt-1 text-xs"
+                    data-testid={`timer-reset-${index}`}
+                  >
+                    <RotateCcw className="w-3 h-3 mr-1" />
+                    Reset
+                  </Button>
+                )}
               </div>
             </div>
             <Collapsible open={showInstructions} onOpenChange={setShowInstructions}>
