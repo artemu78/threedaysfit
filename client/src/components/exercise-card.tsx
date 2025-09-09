@@ -29,7 +29,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
   useEffect(() => {
     // Create audio for timer completion
     audioRef.current = new Audio('../sounds/1time_beep.mp3');
-    
+
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -51,14 +51,14 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                 const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
-                
+
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
-                
+
                 oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
                 gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-                
+
                 oscillator.start(audioContext.currentTime);
                 oscillator.stop(audioContext.currentTime + 0.5);
               });
@@ -116,23 +116,26 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
             data-testid={`exercise-image-${index}`}
           />
           <div className="flex-1">
-            <h4 className="text-lg font-semibold mb-2" data-testid={`exercise-name-${index}`}>
-              {index + 1}. {exercise.name}
-            </h4>
+            <a href={exercise.details || '#'} target="_blank" rel="noopener noreferrer" className="hover:underline flex gap-2 items-baseline">
+              <h4 className="text-lg font-semibold mb-2" data-testid={`exercise-name-${index}`}>
+                {index + 1}. {exercise.name}
+              </h4>
+              <img src="./images/external-link-symbol.png" alt="External link" className="w-4 h-4" />
+            </a>
             <p className="text-muted-foreground mb-3" data-testid={`exercise-muscles-${index}`}>
               Primary: {exercise.primaryMuscles}
               {exercise.secondaryMuscles && `, Secondary: ${exercise.secondaryMuscles}`}
             </p>
             <div className="grid grid-cols-2 gap-4 mb-3">
-            <div className="grid grid-cols-2 mb-3">
-              <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-sets-${index}`}>
-                <div className="font-bold text-primary">{exercise.sets}</div>
-                <div className="text-xs text-muted-foreground">Sets</div>
-              </div>
-              <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-reps-${index}`}>
-                <div className="font-bold text-primary">{exercise.reps}</div>
-                <div className="text-xs text-muted-foreground">Reps</div>
-              </div>
+              <div className="grid grid-cols-2 mb-3">
+                <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-sets-${index}`}>
+                  <div className="font-bold text-primary">{exercise.sets}</div>
+                  <div className="text-xs text-muted-foreground">Sets</div>
+                </div>
+                <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-reps-${index}`}>
+                  <div className="font-bold text-primary">{exercise.reps}</div>
+                  <div className="text-xs text-muted-foreground">Reps</div>
+                </div>
               </div>
               <div className="text-center relative" data-testid={`exercise-rest-${index}`}>
                 <div className="p-2 bg-muted rounded h-[60px] flex items-center justify-center relative">
@@ -140,17 +143,16 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                     variant={isTimerComplete ? "default" : isTimerActive ? "secondary" : "outline"}
                     size="sm"
                     onClick={timeLeft === 0 ? startTimer : isTimerActive ? pauseTimer : startTimer}
-                    className={`w-full h-10 flex flex-col items-center justify-center relative overflow-hidden transition-all duration-300 ${
-                      isTimerComplete 
-                        ? "bg-green-500 hover:bg-green-600 text-white animate-pulse" 
-                        : isTimerActive 
-                          ? "bg-yellow-500 hover:bg-yellow-600 text-white" 
+                    className={`w-full h-10 flex flex-col items-center justify-center relative overflow-hidden transition-all duration-300 ${isTimerComplete
+                        ? "bg-green-500 hover:bg-green-600 text-white animate-pulse"
+                        : isTimerActive
+                          ? "bg-yellow-500 hover:bg-yellow-600 text-white"
                           : "hover:bg-primary hover:text-primary-foreground"
-                    }`}
+                      }`}
                     data-testid={`timer-button-${index}`}
                   >
                     {isTimerActive && timeLeft > 0 && (
-                      <div 
+                      <div
                         className="absolute bottom-0 left-0 h-1 bg-red-500 transition-all duration-1000 ease-linear"
                         style={{ width: `${((restTimeInSeconds - timeLeft) / restTimeInSeconds) * 100}%` }}
                       />
@@ -160,7 +162,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                         <Play className="w-3 h-3" />
                       ) : (
                         <Pause className="w-3 h-3" />
-                      ) }
+                      )}
                       <span className="font-bold text-xs">
                         {timeLeft > 0 ? formatTime(timeLeft) : exercise.rest}
                       </span>
