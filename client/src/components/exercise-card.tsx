@@ -237,12 +237,46 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                 Completed: {completedSets.filter(Boolean).length} / {exercise.sets}
               </div>
               
-              {/* Celebration Animation */}
+              {/* Fireworks Animation */}
               {showCelebration && (
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                  <div className="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-lg animate-bounce shadow-lg">
-                    🎉 All Reps Complete! 🎉
+                <div className="absolute inset-0 pointer-events-none z-10">
+                  {/* Firework particles */}
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-2 h-2 rounded-full animate-ping"
+                      style={{
+                        backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'][i % 6],
+                        left: `${20 + (i % 4) * 20}%`,
+                        top: `${30 + (i % 3) * 20}%`,
+                        animationDelay: `${i * 100}ms`,
+                        animationDuration: '1s'
+                      }}
+                    />
+                  ))}
+                  
+                  {/* Center celebration text */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-3 py-1 rounded-lg font-bold text-sm animate-pulse shadow-lg">
+                      🎉 All Reps Complete! 🎉
+                    </div>
                   </div>
+                  
+                  {/* Additional sparkle effects */}
+                  {Array.from({ length: 8 }, (_, i) => (
+                    <div
+                      key={`sparkle-${i}`}
+                      className="absolute text-yellow-400 animate-bounce"
+                      style={{
+                        left: `${10 + (i % 5) * 18}%`,
+                        top: `${20 + (i % 4) * 15}%`,
+                        animationDelay: `${i * 150}ms`,
+                        animationDuration: '0.8s'
+                      }}
+                    >
+                      ✨
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
