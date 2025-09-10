@@ -130,7 +130,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
       <CardContent className="p-4">
         <div className="flex flex-col lg:flex-row gap-4">
           <img
-            src={exercise.image || './images/exercise_icon.gif'}
+            src={exercise.image || '/images/exercise_icon.gif'}
             alt={exercise.imageAlt}
             className="w-full lg:w-48 h-32 object-cover rounded-lg"
             data-testid={`exercise-image-${index}`}
@@ -140,7 +140,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
               <h4 className="text-lg font-semibold mb-2" data-testid={`exercise-name-${index}`}>
                 {index + 1}. {exercise.name}
               </h4>
-              <img src="./images/external-link-symbol.png" alt="External link" className="w-4 h-4" />
+              <img src="/images/external-link-symbol.png" alt="External link" className="w-4 h-4" />
             </a>
             <p className="text-muted-foreground mb-3" data-testid={`exercise-muscles-${index}`}>
               Primary: {exercise.primaryMuscles}

@@ -1,17 +1,18 @@
+import { WorkoutDay } from "@shared/schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Play } from "lucide-react";
 import { getWorkoutDay } from "@/lib/workout-data";
 import ExerciseCard from "@/components/exercise-card";
 
-export default function Back() {
-  const workoutDay = getWorkoutDay("back");
+export default function ExercisePage({ workoutId }: { workoutId: string }) {
+  const workoutDay = getWorkoutDay(workoutId);
 
   if (!workoutDay) {
     return <div className="text-center text-muted-foreground">Workout not found</div>;
   }
 
   return (
-    <div data-testid="back-page">
+    <div data-testid="upper-body-page">
       <div className="mb-6">
         <h2 className="text-3xl font-bold text-foreground mb-2" data-testid="page-title">
           {workoutDay.name}

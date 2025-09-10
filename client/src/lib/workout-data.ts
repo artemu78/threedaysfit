@@ -2,9 +2,10 @@ import { WorkoutDay } from "@shared/schema";
 
 export const workoutProgram: WorkoutDay[] = [
   {
-    id: "upper",
-    name: "Day 1: Upper Body",
+    id: "body",
+    name: "Upper Body",
     description: "Focus on chest, shoulders, triceps, and biceps",
+    url: "/body",
     warmup: [
       { name: "Arm Circles", description: "10 forward, 10 backward" },
       { name: "Shoulder Rolls", description: "10 rolls each direction" },
@@ -87,8 +88,9 @@ export const workoutProgram: WorkoutDay[] = [
   },
   {
     id: "back",
-    name: "Day 2: Back & Core",
+    name: "Back & Core",
     description: "Focus on back muscles, lats, and core strength",
+    url: "/back",
     warmup: [
       { name: "Cat-Cow Stretches", description: "10 slow repetitions" },
       { name: "Arm Swings", description: "10 each direction" },
@@ -172,8 +174,9 @@ export const workoutProgram: WorkoutDay[] = [
   },
   {
     id: "legs",
-    name: "Day 3: Legs & Glutes",
+    name: "Legs & Glutes",
     description: "Focus on quads, hamstrings, glutes, and calves",
+    url: "/legs",
     warmup: [
       { name: "Bodyweight Squats", description: "10-15 slow repetitions" },
       { name: "Leg Swings", description: "10 each direction, each leg" },
@@ -266,5 +269,6 @@ export const getExercisesByDay = (dayId: string): string[] => {
 };
 
 export const getWorkoutDay = (dayId: string): WorkoutDay | undefined => {
+  console.log("")
   return workoutProgram.find(day => day.id === dayId);
 };

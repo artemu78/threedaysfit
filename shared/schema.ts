@@ -29,6 +29,7 @@ export const workoutDaySchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string(),
+  url: z.string(),
   exercises: z.array(exerciseSchema),
   warmup: z.array(z.object({
     name: z.string(),

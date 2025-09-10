@@ -1,7 +1,7 @@
-import { Link } from "wouter";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Wrench, Check, Lightbulb } from "lucide-react";
+import { Wrench, Lightbulb } from "lucide-react";
+import WorkdayOverview from "@/components/workday-overview";
+import { workoutProgram } from "@/lib/workout-data";
 
 export default function Overview() {
   return (
@@ -50,110 +50,7 @@ export default function Overview() {
 
       {/* Weekly Schedule */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <Card className="hover:shadow-lg transition-shadow" data-testid="workout-card-upper">
-          <CardContent className="p-6">
-            <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold mr-3">
-                1
-              </div>
-              <h3 className="text-xl font-semibold">Upper Body</h3>
-            </div>
-            <p className="text-muted-foreground mb-4">Chest, shoulders, triceps, and biceps</p>
-            <ul className="space-y-2 text-sm mb-4">
-              <li className="flex items-center">
-                <Check className="w-4 h-4 text-secondary mr-2" />
-                Bench Press
-              </li>
-              <li className="flex items-center">
-                <Check className="w-4 h-4 text-secondary mr-2" />
-                Dumbbell Rows
-              </li>
-              <li className="flex items-center">
-                <Check className="w-4 h-4 text-secondary mr-2" />
-                Overhead Press
-              </li>
-              <li className="flex items-center">
-                <Check className="w-4 h-4 text-secondary mr-2" />
-                Dumbbell Curls
-              </li>
-            </ul>
-            <Link href="/upper-body">
-              <Button className="w-full" data-testid="button-view-upper">
-                View Workout
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-lg transition-shadow" data-testid="workout-card-back">
-          <CardContent className="p-6">
-            <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold mr-3">
-                2
-              </div>
-              <h3 className="text-xl font-semibold">Back & Core</h3>
-            </div>
-            <p className="text-muted-foreground mb-4">Back muscles, lats, and core strength</p>
-            <ul className="space-y-2 text-sm mb-4">
-              <li className="flex items-center">
-                <Check className="w-4 h-4 text-secondary mr-2" />
-                Bent-over Rows
-              </li>
-              <li className="flex items-center">
-                <Check className="w-4 h-4 text-secondary mr-2" />
-                Single-arm Rows
-              </li>
-              <li className="flex items-center">
-                <Check className="w-4 h-4 text-secondary mr-2" />
-                Face Pulls
-              </li>
-              <li className="flex items-center">
-                <Check className="w-4 h-4 text-secondary mr-2" />
-                Planks
-              </li>
-            </ul>
-            <Link href="/back">
-              <Button className="w-full" data-testid="button-view-back">
-                View Workout
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-lg transition-shadow" data-testid="workout-card-legs">
-          <CardContent className="p-6">
-            <div className="flex items-center mb-4">
-              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold mr-3">
-                3
-              </div>
-              <h3 className="text-xl font-semibold">Legs & Glutes</h3>
-            </div>
-            <p className="text-muted-foreground mb-4">Quads, hamstrings, glutes, and calves</p>
-            <ul className="space-y-2 text-sm mb-4">
-              <li className="flex items-center">
-                <Check className="w-4 h-4 text-secondary mr-2" />
-                Squats
-              </li>
-              <li className="flex items-center">
-                <Check className="w-4 h-4 text-secondary mr-2" />
-                Romanian Deadlifts
-              </li>
-              <li className="flex items-center">
-                <Check className="w-4 h-4 text-secondary mr-2" />
-                Lunges
-              </li>
-              <li className="flex items-center">
-                <Check className="w-4 h-4 text-secondary mr-2" />
-                Calf Raises
-              </li>
-            </ul>
-            <Link href="/legs">
-              <Button className="w-full" data-testid="button-view-legs">
-                View Workout
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
+        {...workoutProgram.map((workoutDay, index) => <WorkdayOverview workdayId={workoutDay.id} number={index} />)}
       </div>
 
       {/* Program Tips */}
