@@ -50,7 +50,7 @@ export default function Overview() {
 
       {/* Weekly Schedule */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        {...workoutProgram.map((workoutDay, index) => <WorkdayOverview workdayId={workoutDay.id} number={index} />)}
+        {...workoutProgram.map((workoutDay, index) => <WorkdayOverview workdayId={workoutDay.id} number={index+1} />)}
       </div>
 
       {/* Program Tips */}
