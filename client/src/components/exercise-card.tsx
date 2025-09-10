@@ -18,6 +18,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
   const [timeLeft, setTimeLeft] = useState(0);
   const [isTimerComplete, setIsTimerComplete] = useState(false);
   const [completedSets, setCompletedSets] = useState<boolean[]>([]);
+  const [showCelebration, setShowCelebration] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -123,6 +124,13 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
     newCompletedSets[setIndex] = completed;
     setCompletedSets(newCompletedSets);
     saveExerciseSetCompletion(exercise.name, setIndex, completed);
+    
+    // Check if all sets are completed and trigger celebration
+    const allCompleted = newCompletedSets.filter(Boolean).length === exercise.sets;
+    if (allCompleted && completed) {
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 3000);
+    }
   };
 
   return (
@@ -205,8 +213,8 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
             </div>
 
             {/* Sets Checkboxes */}
-            <div className="mb-3" data-testid={`exercise-sets-checkboxes-${index}`}>
-              <h5 className="text-sm font-medium mb-2">Track Completed Sets:</h5>
+            <div className="mb-3 relative" data-testid={`exercise-sets-checkboxes-${index}`}>
+              <h5 className="text-sm font-medium mb-2">Track Completed Reps:</h5>
               <div className="flex flex-wrap gap-2">
                 {Array.from({ length: exercise.sets }, (_, i) => (
                   <div key={i} className="flex items-center space-x-2 p-2 bg-muted rounded-lg">
@@ -220,7 +228,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                       htmlFor={`set-${index}-${i}`}
                       className="text-sm font-medium cursor-pointer"
                     >
-                      Set {i + 1}
+                      Rep {i + 1}
                     </label>
                   </div>
                 ))}
@@ -228,6 +236,15 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
               <div className="text-xs text-muted-foreground mt-1">
                 Completed: {completedSets.filter(Boolean).length} / {exercise.sets}
               </div>
+              
+              {/* Celebration Animation */}
+              {showCelebration && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                  <div className="bg-green-500 text-white px-4 py-2 rounded-lg font-bold text-lg animate-bounce shadow-lg">
+                    🎉 All Reps Complete! 🎉
+                  </div>
+                </div>
+              )}
             </div>
             <Collapsible open={showInstructions} onOpenChange={setShowInstructions}>
               <CollapsibleTrigger asChild>
