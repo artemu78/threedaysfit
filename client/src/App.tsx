@@ -5,12 +5,16 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Router } from "@/components/router";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 function App() {
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  if (!clientId) {
+    throw new Error("Missing Google Client ID");
+  }
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
+      <GoogleOAuthProvider clientId={clientId}>
         <TooltipProvider>
           <div className="min-h-screen bg-background">
             <Header />
@@ -21,7 +25,7 @@ function App() {
           </div>
           <Toaster />
         </TooltipProvider>
-      </AuthProvider>
+      </GoogleOAuthProvider>
     </QueryClientProvider>
   );
 }
