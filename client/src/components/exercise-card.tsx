@@ -1,11 +1,18 @@
 import { Exercise } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Info, Play, Pause, RotateCcw } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import { saveExerciseSetCompletion, getTodayExerciseSets } from "@/lib/local-storage";
+import {
+  saveExerciseSetCompletion,
+  getTodayExerciseSets,
+} from "@/lib/local-storage";
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -32,7 +39,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
 
   useEffect(() => {
     // Create audio for timer completion
-    audioRef.current = new Audio('../sounds/1time_beep.mp3');
+    audioRef.current = new Audio("../sounds/1time_beep.mp3");
 
     // Load today's completed sets
     const todaySets = getTodayExerciseSets(exercise.name);
@@ -62,16 +69,23 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
             if (audioRef.current) {
               audioRef.current.play().catch(() => {
                 // Fallback: create a beep sound using Web Audio API
-                const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+                const audioContext = new (window.AudioContext ||
+                  (window as any).webkitAudioContext)();
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
 
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
 
-                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(
+                  800,
+                  audioContext.currentTime
+                );
                 gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                gainNode.gain.exponentialRampToValueAtTime(
+                  0.01,
+                  audioContext.currentTime + 0.5
+                );
 
                 oscillator.start(audioContext.currentTime);
                 oscillator.stop(audioContext.currentTime + 0.5);
@@ -116,7 +130,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   const handleSetCompletion = (setIndex: number, completed: boolean) => {
@@ -124,9 +138,10 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
     newCompletedSets[setIndex] = completed;
     setCompletedSets(newCompletedSets);
     saveExerciseSetCompletion(exercise.name, setIndex, completed);
-    
+
     // Check if all sets are completed and trigger celebration
-    const allCompleted = newCompletedSets.filter(Boolean).length === exercise.sets;
+    const allCompleted =
+      newCompletedSets.filter(Boolean).length === exercise.sets;
     if (allCompleted && completed) {
       setShowCelebration(true);
       setTimeout(() => setShowCelebration(false), 3000);
@@ -134,56 +149,102 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
   };
 
   return (
-    <Card className="border border-border" data-testid={`exercise-card-${index}`}>
+    <Card
+      className="border border-border"
+      data-testid={`exercise-card-${index}`}
+    >
       <CardContent className="p-4">
         <div className="flex flex-col lg:flex-row gap-4">
           <img
-            src={exercise.image || '/images/exercise_icon.gif'}
+            src={exercise.image || "/images/exercise_icon.gif"}
             alt={exercise.imageAlt}
             className="w-full lg:w-48 h-32 object-cover rounded-lg"
             data-testid={`exercise-image-${index}`}
           />
           <div className="flex-1">
-            <a href={exercise.details || '#'} target="_blank" rel="noopener noreferrer" className="hover:underline flex gap-2 items-baseline">
-              <h4 className="text-lg font-semibold mb-2" data-testid={`exercise-name-${index}`}>
+            <a
+              href={exercise.details || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline flex gap-2 items-baseline"
+            >
+              <h4
+                className="text-lg font-semibold mb-2"
+                data-testid={`exercise-name-${index}`}
+              >
                 {index + 1}. {exercise.name}
               </h4>
-              <img src="/images/external-link-symbol.png" alt="External link" className="w-4 h-4" />
+              <img
+                src="/images/external-link-symbol.png"
+                alt="External link"
+                className="w-4 h-4"
+              />
             </a>
-            <p className="text-muted-foreground mb-3" data-testid={`exercise-muscles-${index}`}>
+            <p
+              className="text-muted-foreground mb-3"
+              data-testid={`exercise-muscles-${index}`}
+            >
               Primary: {exercise.primaryMuscles}
-              {exercise.secondaryMuscles && `, Secondary: ${exercise.secondaryMuscles}`}
+              {exercise.secondaryMuscles &&
+                `, Secondary: ${exercise.secondaryMuscles}`}
             </p>
             <div className="grid grid-cols-2 gap-4 mb-3">
               <div className="grid grid-cols-2 mb-3">
-
-                <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-sets-${index}`}>
+                <div
+                  className="text-center p-2 bg-muted rounded"
+                  data-testid={`exercise-sets-${index}`}
+                >
                   <div className="font-bold text-primary">{exercise.sets}</div>
                   <div className="text-xs text-muted-foreground">Sets</div>
                 </div>
-                <div className="text-center p-2 bg-muted rounded" data-testid={`exercise-reps-${index}`}>
+                <div
+                  className="text-center p-2 bg-muted rounded"
+                  data-testid={`exercise-reps-${index}`}
+                >
                   <div className="font-bold text-primary">{exercise.reps}</div>
                   <div className="text-xs text-muted-foreground">Reps</div>
                 </div>
               </div>
-              <div className="text-center relative" data-testid={`exercise-rest-${index}`}>
+              <div
+                className="text-center relative"
+                data-testid={`exercise-rest-${index}`}
+              >
                 <div className="p-2 bg-muted rounded h-[60px] flex items-center justify-center relative">
                   <Button
-                    variant={isTimerComplete ? "default" : isTimerActive ? "secondary" : "outline"}
+                    variant={
+                      isTimerComplete
+                        ? "default"
+                        : isTimerActive
+                        ? "secondary"
+                        : "outline"
+                    }
                     size="sm"
-                    onClick={timeLeft === 0 ? startTimer : isTimerActive ? pauseTimer : startTimer}
-                    className={`w-full h-10 flex items-center justify-center relative overflow-hidden transition-all duration-300 ${isTimerComplete
-                      ? "bg-green-500 hover:bg-green-600 text-white animate-pulse"
-                      : isTimerActive
+                    onClick={
+                      timeLeft === 0
+                        ? startTimer
+                        : isTimerActive
+                        ? pauseTimer
+                        : startTimer
+                    }
+                    className={`w-full h-10 flex items-center justify-center relative overflow-hidden transition-all duration-300 ${
+                      isTimerComplete
+                        ? "bg-green-500 hover:bg-green-600 text-white animate-pulse"
+                        : isTimerActive
                         ? "bg-yellow-500 hover:bg-yellow-600 text-white"
                         : "hover:bg-primary hover:text-primary-foreground"
-                      }`}
+                    }`}
                     data-testid={`timer-button-${index}`}
                   >
                     {isTimerActive && timeLeft > 0 && (
                       <div
                         className="absolute bottom-0 left-0 h-1 bg-red-500 transition-all duration-1000 ease-linear"
-                        style={{ width: `${((restTimeInSeconds - timeLeft) / restTimeInSeconds) * 100}%` }}
+                        style={{
+                          width: `${
+                            ((restTimeInSeconds - timeLeft) /
+                              restTimeInSeconds) *
+                            100
+                          }%`,
+                        }}
                       />
                     )}
                     <div className="flex items-center space-x-1">
@@ -213,30 +274,41 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
             </div>
 
             {/* Sets Checkboxes */}
-            <div className="mb-3 relative" data-testid={`exercise-sets-checkboxes-${index}`}>
-              <h5 className="text-sm font-medium mb-2">Track Completed Reps:</h5>
+            <div
+              className="mb-3 relative"
+              data-testid={`exercise-sets-checkboxes-${index}`}
+            >
+              <h5 className="text-sm font-medium mb-2">
+                Track Completed Sets:
+              </h5>
               <div className="flex flex-wrap gap-2">
                 {Array.from({ length: exercise.sets }, (_, i) => (
-                  <div key={i} className="flex items-center space-x-2 p-2 bg-muted rounded-lg">
+                  <div
+                    key={i}
+                    className="flex items-center space-x-2 p-2 bg-muted rounded-lg"
+                  >
                     <Checkbox
                       id={`set-${index}-${i}`}
                       checked={completedSets[i] || false}
-                      onCheckedChange={(checked) => handleSetCompletion(i, !!checked)}
+                      onCheckedChange={(checked) =>
+                        handleSetCompletion(i, !!checked)
+                      }
                       data-testid={`checkbox-set-${index}-${i}`}
                     />
                     <label
                       htmlFor={`set-${index}-${i}`}
                       className="text-sm font-medium cursor-pointer"
                     >
-                      Rep {i + 1}
+                      Set {i + 1}
                     </label>
                   </div>
                 ))}
               </div>
               <div className="text-xs text-muted-foreground mt-1">
-                Completed: {completedSets.filter(Boolean).length} / {exercise.sets}
+                Completed: {completedSets.filter(Boolean).length} /{" "}
+                {exercise.sets}
               </div>
-              
+
               {/* Fireworks Animation */}
               {showCelebration && (
                 <div className="absolute inset-0 pointer-events-none z-10">
@@ -246,22 +318,29 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                       key={i}
                       className="absolute w-2 h-2 rounded-full animate-ping"
                       style={{
-                        backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'][i % 6],
+                        backgroundColor: [
+                          "#ef4444",
+                          "#f59e0b",
+                          "#10b981",
+                          "#3b82f6",
+                          "#8b5cf6",
+                          "#ec4899",
+                        ][i % 6],
                         left: `${20 + (i % 4) * 20}%`,
                         top: `${30 + (i % 3) * 20}%`,
                         animationDelay: `${i * 100}ms`,
-                        animationDuration: '1s'
+                        animationDuration: "1s",
                       }}
                     />
                   ))}
-                  
+
                   {/* Center celebration text */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-3 py-1 rounded-lg font-bold text-sm animate-pulse shadow-lg">
-                      🎉 All Reps Complete! 🎉
+                      🎉 All Sets Complete! 🎉
                     </div>
                   </div>
-                  
+
                   {/* Additional sparkle effects */}
                   {Array.from({ length: 8 }, (_, i) => (
                     <div
@@ -271,7 +350,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                         left: `${10 + (i % 5) * 18}%`,
                         top: `${20 + (i % 4) * 15}%`,
                         animationDelay: `${i * 150}ms`,
-                        animationDuration: '0.8s'
+                        animationDuration: "0.8s",
                       }}
                     >
                       ✨
@@ -280,7 +359,10 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                 </div>
               )}
             </div>
-            <Collapsible open={showInstructions} onOpenChange={setShowInstructions}>
+            <Collapsible
+              open={showInstructions}
+              onOpenChange={setShowInstructions}
+            >
               <CollapsibleTrigger asChild>
                 <Button
                   variant="outline"
@@ -292,7 +374,10 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                   Form Instructions
                 </Button>
               </CollapsibleTrigger>
-              <CollapsibleContent className="mt-4 p-4 bg-muted rounded-lg" data-testid={`instructions-content-${index}`}>
+              <CollapsibleContent
+                className="mt-4 p-4 bg-muted rounded-lg"
+                data-testid={`instructions-content-${index}`}
+              >
                 <h5 className="font-semibold mb-2">Proper Form:</h5>
                 <ul className="space-y-1 text-sm">
                   {exercise.instructions.map((instruction, i) => (
