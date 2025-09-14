@@ -1,5 +1,6 @@
 import { Exercise } from "@shared/schema";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Collapsible,
@@ -158,7 +159,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
           <img
             src={exercise.image || "/images/exercise_icon.gif"}
             alt={exercise.imageAlt}
-            className="w-full lg:w-48 h-32 object-cover rounded-lg"
+            className="w-full lg:w-48 object-cover rounded-lg flex-1"
             data-testid={`exercise-image-${index}`}
           />
           <div className="flex-1">
@@ -281,26 +282,34 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
               <h5 className="text-sm font-medium mb-2">
                 Track Completed Sets:
               </h5>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2">
                 {Array.from({ length: exercise.sets }, (_, i) => (
                   <div
+                    className="flex flex-col sm:flex-row gap-1 lg:gap-2"
                     key={i}
-                    className="flex items-center space-x-2 p-2 bg-muted rounded-lg"
                   >
-                    <Checkbox
-                      id={`set-${index}-${i}`}
-                      checked={completedSets[i] || false}
-                      onCheckedChange={(checked) =>
-                        handleSetCompletion(i, !!checked)
-                      }
-                      data-testid={`checkbox-set-${index}-${i}`}
-                    />
-                    <label
-                      htmlFor={`set-${index}-${i}`}
-                      className="text-sm font-medium cursor-pointer"
+                    <div
+                      key={i}
+                      className="flex items-center space-x-2 p-2 bg-muted rounded-lg cursor-pointer hover:shadow whitespace-nowrap"
+                      onClick={() => handleSetCompletion(i, !completedSets[i])}
                     >
-                      Set {i + 1}
-                    </label>
+                      <Checkbox
+                        id={`set-${index}-${i}`}
+                        checked={completedSets[i] || false}
+                        data-testid={`checkbox-set-${index}-${i}`}
+                      />
+                      <label className="text-sm font-medium cursor-pointer">
+                        Set {i + 1}
+                      </label>
+                    </div>
+                    <Input
+                      type="number"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      placeholder="Weight (kg)"
+                      maxLength={5}
+                      className="w-50 sm:w-32 lg:w-32"
+                    />
                   </div>
                 ))}
               </div>

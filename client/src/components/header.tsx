@@ -1,17 +1,10 @@
 import { Link, useLocation } from "wouter";
 import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, LogOut, X } from "lucide-react";
-import { GoogleLogin } from "@react-oauth/google";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { workoutProgram } from "@/lib/workout-data";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Login } from "@/components/login";
 
 const navigation = [
   { name: "Overview", path: "/" },
@@ -24,15 +17,6 @@ const navigation = [
 
 export default function Header() {
   const [location] = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const toggleMobileMenu = useCallback(() => {
-    setMobileMenuOpen((prev) => !prev);
-  }, []);
-
-  const closeMobileMenu = useCallback(() => {
-    setMobileMenuOpen(false);
-  }, []);
 
   return (
     <header
@@ -82,14 +66,7 @@ export default function Header() {
 
           {/* Right side: Auth + Mobile Menu */}
           <div className="flex items-center space-x-4">
-            <GoogleLogin
-              onSuccess={(credentialResponse) => {
-                console.log(credentialResponse);
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
+            <Login />
           </div>
         </div>
       </div>
