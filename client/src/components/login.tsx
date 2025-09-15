@@ -1,16 +1,16 @@
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import { useUser, IUser, IUserState } from "@/lib/store";
+import { useUser, IGoogleUser } from "@/lib/store";
+import { UserAvatar } from "@/components/user-avatar";
 
 export const Login = () => {
-  const setUser = useUser((state) => state.setUser);
+  const { user, setGoogleData } = useUser((state) => state);
 
   const handleSignInSuccess = (credentialResponse: CredentialResponse) => {
     if (credentialResponse.credential) {
-      const user: IUser = jwtDecode(credentialResponse.credential);
-      setUser(user);
+      const user: IGoogleUser = jwtDecode(credentialResponse.credential);
+      setGoogleData(user);
     }
-    // TODO: Handle the credentialResponse, e.g., send the token to your backend
   };
 
   const handleSignInError = () => {
@@ -19,6 +19,15 @@ export const Login = () => {
   };
 
   return (
-    <GoogleLogin onSuccess={handleSignInSuccess} onError={handleSignInError} />
+    <>
+      {user?.googleData ? (
+        <UserAvatar />
+      ) : (
+        <GoogleLogin
+          onSuccess={handleSignInSuccess}
+          onError={handleSignInError}
+        />
+      )}
+    </>
   );
 };

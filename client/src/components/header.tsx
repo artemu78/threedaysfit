@@ -1,7 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { workoutProgram } from "@/lib/workout-data";
 import { Login } from "@/components/login";

@@ -302,14 +302,24 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                         Set {i + 1}
                       </label>
                     </div>
-                    <Input
-                      type="number"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      placeholder="Weight (kg)"
-                      maxLength={5}
-                      className="w-50 sm:w-32 lg:w-32"
-                    />
+                    <div className="flex gap-2 flex-1 ">
+                      <Input
+                        type="number"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        placeholder="Weight (kg)"
+                        maxLength={5}
+                        className="sm:w-32 lg:w-32"
+                      />
+                      <Input
+                        type="number"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        placeholder="reps"
+                        maxLength={5}
+                        className="sm:w-32 lg:w-32"
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -393,6 +403,20 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                     <li key={i}>• {instruction}</li>
                   ))}
                 </ul>
+
+                <a
+                  href="youtube.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3 inline-flex items-center text-sm text-primary hover:underline"
+                >
+                  Watch Video Tutorial{" "}
+                  <img
+                    src="/images/external-link-symbol.png"
+                    alt="External link"
+                    className="w-4 h-4 ml-2"
+                  />
+                </a>
               </CollapsibleContent>
             </Collapsible>
           </div>
