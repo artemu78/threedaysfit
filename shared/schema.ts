@@ -13,6 +13,7 @@ export const workoutLogSchema = z.object({
 });
 
 export const exerciseSchema = z.object({
+  id: z.number(),
   name: z.string(),
   primaryMuscles: z.string(),
   secondaryMuscles: z.string().optional(),
@@ -31,10 +32,12 @@ export const workoutDaySchema = z.object({
   description: z.string(),
   url: z.string(),
   exercises: z.array(exerciseSchema),
-  warmup: z.array(z.object({
-    name: z.string(),
-    description: z.string(),
-  })),
+  warmup: z.array(
+    z.object({
+      name: z.string(),
+      description: z.string(),
+    })
+  ),
 });
 
 export type WorkoutLog = z.infer<typeof workoutLogSchema>;

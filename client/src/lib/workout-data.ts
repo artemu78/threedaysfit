@@ -9,11 +9,15 @@ export const workoutProgram: WorkoutDay[] = [
     warmup: [
       { name: "Arm Circles", description: "10 forward, 10 backward" },
       { name: "Shoulder Rolls", description: "10 rolls each direction" },
-      { name: "Light Dumbbell Press", description: "10-15 reps with light weight" },
+      {
+        name: "Light Dumbbell Press",
+        description: "10-15 reps with light weight",
+      },
       { name: "Band Pull-aparts", description: "15 reps (or arm swings)" },
     ],
     exercises: [
       {
+        id: 1,
         name: "Bench Press",
         primaryMuscles: "Chest",
         secondaryMuscles: "Shoulders, Triceps",
@@ -26,12 +30,13 @@ export const workoutProgram: WorkoutDay[] = [
           "Grip bar slightly wider than shoulder-width",
           "Lower bar to chest with control",
           "Press up explosively, keeping core tight",
-          "Keep shoulder blades retracted throughout"
+          "Keep shoulder blades retracted throughout",
         ],
         image: "./images/day1/Barbell-Bench-Press.gif",
-        details: "https://fitnessprogramer.com/exercise/bench-press/"
+        details: "https://fitnessprogramer.com/exercise/bench-press/",
       },
       {
+        id: 2,
         name: "Dumbbell Rows",
         primaryMuscles: "Back",
         secondaryMuscles: "Biceps",
@@ -44,12 +49,13 @@ export const workoutProgram: WorkoutDay[] = [
           "Pull dumbbells to ribcage",
           "Squeeze shoulder blades together",
           "Lower with control",
-          "Keep core engaged throughout"
+          "Keep core engaged throughout",
         ],
         image: "./images/day1/Dumbbell-Row.gif",
-        details: "https://fitnessprogramer.com/exercise/dumbbell-row/"
+        details: "https://fitnessprogramer.com/exercise/dumbbell-row/",
       },
       {
+        id: 3,
         name: "Overhead Press",
         primaryMuscles: "Shoulders",
         secondaryMuscles: "Triceps",
@@ -62,12 +68,14 @@ export const workoutProgram: WorkoutDay[] = [
           "Start with dumbbells at shoulder height",
           "Press overhead in straight line",
           "Keep core tight, don't arch back",
-          "Lower with control to starting position"
+          "Lower with control to starting position",
         ],
         image: "./images/day1/Barbell-Standing-Military-Press.gif",
-        details: "https://fitnessprogramer.com/exercise/barbell-military-press/"
+        details:
+          "https://fitnessprogramer.com/exercise/barbell-military-press/",
       },
       {
+        id: 4,
         name: "Dumbbell Curls",
         primaryMuscles: "Biceps",
         sets: 3,
@@ -79,12 +87,12 @@ export const workoutProgram: WorkoutDay[] = [
           "Keep elbows close to body",
           "Curl weights up with control",
           "Squeeze at the top",
-          "Lower slowly to starting position"
+          "Lower slowly to starting position",
         ],
         image: "./images/day1/Dumbbell-Curl.gif",
-        details: "https://fitnessprogramer.com/exercise/dumbbell-curl/"
-      }
-    ]
+        details: "https://fitnessprogramer.com/exercise/dumbbell-curl/",
+      },
+    ],
   },
   {
     id: "back",
@@ -99,6 +107,7 @@ export const workoutProgram: WorkoutDay[] = [
     ],
     exercises: [
       {
+        id: 5,
         name: "Bent-over Barbell Rows",
         primaryMuscles: "Upper Back",
         secondaryMuscles: "Biceps",
@@ -111,12 +120,13 @@ export const workoutProgram: WorkoutDay[] = [
           "Pull bar to lower chest/upper abdomen",
           "Keep elbows close to body",
           "Squeeze shoulder blades at top",
-          "Lower with control"
+          "Lower with control",
         ],
         image: "./images/day2/Barbell-Bent-Over-Row.gif",
-        details: "https://fitnessprogramer.com/exercise/barbell-bent-over-row/"
+        details: "https://fitnessprogramer.com/exercise/barbell-bent-over-row/",
       },
       {
+        id: 6,
         name: "Single-arm Dumbbell Rows",
         primaryMuscles: "Lats",
         secondaryMuscles: "Rhomboids",
@@ -129,12 +139,13 @@ export const workoutProgram: WorkoutDay[] = [
           "Pull dumbbell to hip level",
           "Keep back straight and core tight",
           "Focus on lat engagement",
-          "Complete all reps before switching sides"
+          "Complete all reps before switching sides",
         ],
         image: "./images/day2/Dumbbell-Row.gif",
-        details: "https://fitnessprogramer.com/exercise/dumbbell-row/"
+        details: "https://fitnessprogramer.com/exercise/dumbbell-row/",
       },
       {
+        id: 7,
         name: "Face Pulls (Reverse Fly)",
         primaryMuscles: "Rear Delts",
         secondaryMuscles: "Upper Traps",
@@ -147,12 +158,14 @@ export const workoutProgram: WorkoutDay[] = [
           "Lift arms out to sides, squeezing shoulder blades",
           "Focus on rear delt activation",
           "Keep slight bend in elbows",
-          "Lower with control"
+          "Lower with control",
         ],
         image: "./images/day2/Bent-Over-Lateral-Raise.gif",
-        details: "https://fitnessprogramer.com/exercise/bent-over-lateral-raise/"
+        details:
+          "https://fitnessprogramer.com/exercise/bent-over-lateral-raise/",
       },
       {
+        id: 8,
         name: "Plank Hold",
         primaryMuscles: "Core",
         secondaryMuscles: "Shoulders",
@@ -165,12 +178,12 @@ export const workoutProgram: WorkoutDay[] = [
           "Keep body in straight line",
           "Engage core and glutes",
           "Don't let hips sag or pike up",
-          "Breathe steadily throughout hold"
+          "Breathe steadily throughout hold",
         ],
         image: "./images/day2/plank.gif",
-        details: "https://fitnessprogramer.com/exercise/plank/"
-      }
-    ]
+        details: "https://fitnessprogramer.com/exercise/plank/",
+      },
+    ],
   },
   {
     id: "legs",
@@ -185,6 +198,7 @@ export const workoutProgram: WorkoutDay[] = [
     ],
     exercises: [
       {
+        id: 9,
         name: "Barbell Squats",
         primaryMuscles: "Quads",
         secondaryMuscles: "Glutes, Hamstrings",
@@ -197,12 +211,13 @@ export const workoutProgram: WorkoutDay[] = [
           "Keep chest up and core braced",
           "Lower until thighs parallel to floor",
           "Drive through heels to stand",
-          "Keep knees tracking over toes"
+          "Keep knees tracking over toes",
         ],
         image: "./images/day3/BARBELL-SQUAT.gif",
-        details: "https://fitnessprogramer.com/exercise/squat/"
+        details: "https://fitnessprogramer.com/exercise/squat/",
       },
       {
+        id: 10,
         name: "Romanian Deadlifts",
         primaryMuscles: "Hamstrings",
         secondaryMuscles: "Glutes",
@@ -215,12 +230,13 @@ export const workoutProgram: WorkoutDay[] = [
           "Hinge at hips, pushing them back",
           "Keep bar close to legs",
           "Feel stretch in hamstrings",
-          "Drive hips forward to return to start"
+          "Drive hips forward to return to start",
         ],
         image: "./images/day3/Barbell-Romanian-Deadlift.gif",
-        details: "https://fitnessprogramer.com/exercise/romanian-deadlift/"
+        details: "https://fitnessprogramer.com/exercise/romanian-deadlift/",
       },
       {
+        id: 11,
         name: "Dumbbell Lunges",
         primaryMuscles: "Quads",
         secondaryMuscles: "Glutes",
@@ -233,12 +249,14 @@ export const workoutProgram: WorkoutDay[] = [
           "Lower until both knees at 90 degrees",
           "Keep front knee over ankle",
           "Push through front heel to return",
-          "Alternate legs or complete one side first"
+          "Alternate legs or complete one side first",
         ],
         image: "./images/day3/dumbbell-lunges.gif",
-        details: "https://fitnessprogramer.com/exercise/dumbbell-walking-lunge/"
+        details:
+          "https://fitnessprogramer.com/exercise/dumbbell-walking-lunge/",
       },
       {
+        id: 12,
         name: "Calf Raises",
         primaryMuscles: "Calves",
         sets: 3,
@@ -250,25 +268,27 @@ export const workoutProgram: WorkoutDay[] = [
           "Rise up on toes as high as possible",
           "Squeeze calves at the top",
           "Lower slowly with control",
-          "Use a step for increased range of motion"
+          "Use a step for increased range of motion",
         ],
         image: "./images/day3/Dumbbell-Calf-Raise.gif",
-        details: "https://fitnessprogramer.com/exercise/calf-raise/"
-      }
-    ]
-  }
+        details: "https://fitnessprogramer.com/exercise/calf-raise/",
+      },
+    ],
+  },
 ];
 
 export const getAllExercises = (): string[] => {
-  return workoutProgram.flatMap(day => day.exercises.map(exercise => exercise.name));
+  return workoutProgram.flatMap((day) =>
+    day.exercises.map((exercise) => exercise.name)
+  );
 };
 
 export const getExercisesByDay = (dayId: string): string[] => {
-  const day = workoutProgram.find(d => d.id === dayId);
-  return day ? day.exercises.map(exercise => exercise.name) : [];
+  const day = workoutProgram.find((d) => d.id === dayId);
+  return day ? day.exercises.map((exercise) => exercise.name) : [];
 };
 
 export const getWorkoutDay = (dayId: string): WorkoutDay | undefined => {
-  console.log("")
-  return workoutProgram.find(day => day.id === dayId);
+  console.log("");
+  return workoutProgram.find((day) => day.id === dayId);
 };
