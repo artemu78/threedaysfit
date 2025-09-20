@@ -10,24 +10,24 @@ const PROJECT_ID = import.meta.env.VITE_FIRESTORE_PROJECT_ID;
  * @returns A Firestore-compatible fields object.
  */
 const transformToFirestoreFormat = (data: { [key: string]: any }) => {
+  const transformValue = (value: any): any => {
+    if (value === null) return { nullValue: null };
+    if (typeof value === 'string') return { stringValue: value };
+    if (typeof value === 'boolean') return { booleanValue: value };
+    if (typeof value === 'number' && Number.isInteger(value)) return { integerValue: value };
+    if (typeof value === 'number') return { doubleValue: value };
+    if (value instanceof Date) return { timestampValue: value.toISOString() };
+    if (Array.isArray(value)) return { arrayValue: { values: value.map(transformValue) } };
+    if (typeof value === 'object') return { mapValue: { fields: transformToFirestoreFormat(value) } };
+    return { nullValue: null }; // For undefined and other unsupported types
+  };
+
   const fields: { [key: string]: any } = {};
   for (const key in data) {
     if (Object.prototype.hasOwnProperty.call(data, key)) {
       const value = data[key];
-      if (typeof value === 'string') {
-        fields[key] = { stringValue: value };
-      } else if (typeof value === 'number' && Number.isInteger(value)) {
-        fields[key] = { integerValue: value };
-      } else if (typeof value === 'number') {
-        fields[key] = { doubleValue: value };
-      } else if (typeof value === 'boolean') {
-        fields[key] = { booleanValue: value };
-      } else if (value === null) {
-        fields[key] = { nullValue: null };
-      } else if (Array.isArray(value)) {
-        fields[key] = { arrayValue: { values: value.map(item => transformToFirestoreFormat({ item }).item) } };
-      } else if (typeof value === 'object') {
-        fields[key] = { mapValue: { fields: transformToFirestoreFormat(value) } };
+      if (value !== undefined) {
+        fields[key] = transformValue(value);
       }
     }
   }

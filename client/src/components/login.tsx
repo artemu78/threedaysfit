@@ -12,14 +12,23 @@ export const Login = () => {
       try {
         const decodedUser: IGoogleUser = jwtDecode(credentialResponse.credential);
         setGoogleData(decodedUser);
-
+        const {
+          aud,
+          azp,
+          exp,
+          iat,
+          iss,
+          jti,
+          nbf,
+          ...userProfile
+        } = decodedUser;
         // Use the Google ID as the document ID in Firestore
         const documentId = decodedUser.sub;
 
         await writeToFirestore(
           credentialResponse.credential,
           "users",
-          decodedUser,
+          userProfile,
           documentId
         );
       } catch (error) {
