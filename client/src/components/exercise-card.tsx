@@ -216,35 +216,33 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                       isTimerComplete
                         ? "default"
                         : isTimerActive
-                        ? "secondary"
-                        : "outline"
+                          ? "secondary"
+                          : "outline"
                     }
                     size="sm"
                     onClick={
                       timeLeft === 0
                         ? startTimer
                         : isTimerActive
-                        ? pauseTimer
-                        : startTimer
+                          ? pauseTimer
+                          : startTimer
                     }
-                    className={`w-full h-10 flex items-center justify-center relative overflow-hidden transition-all duration-300 ${
-                      isTimerComplete
+                    className={`w-full h-10 flex items-center justify-center relative overflow-hidden transition-all duration-300 ${isTimerComplete
                         ? "bg-green-500 hover:bg-green-600 text-white animate-pulse"
                         : isTimerActive
-                        ? "bg-yellow-500 hover:bg-yellow-600 text-white"
-                        : "hover:bg-primary hover:text-primary-foreground"
-                    }`}
+                          ? "bg-yellow-500 hover:bg-yellow-600 text-white"
+                          : "hover:bg-primary hover:text-primary-foreground"
+                      }`}
                     data-testid={`timer-button-${index}`}
                   >
                     {isTimerActive && timeLeft > 0 && (
                       <div
                         className="absolute bottom-0 left-0 h-1 bg-red-500 transition-all duration-1000 ease-linear"
                         style={{
-                          width: `${
-                            ((restTimeInSeconds - timeLeft) /
+                          width: `${((restTimeInSeconds - timeLeft) /
                               restTimeInSeconds) *
                             100
-                          }%`,
+                            }%`,
                         }}
                       />
                     )}
@@ -405,7 +403,7 @@ export default function ExerciseCard({ exercise, index }: ExerciseCardProps) {
                 </ul>
 
                 <a
-                  href="youtube.com"
+                  href={`https://youtube.com/results?search_query=${exercise.name}`}
                   target="_blank"
                   rel="noreferrer"
                   className="mt-3 inline-flex items-center text-sm text-primary hover:underline"
