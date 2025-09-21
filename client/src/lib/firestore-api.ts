@@ -61,7 +61,7 @@ export const writeToFirestore = async (
   // we would need a separate method using POST.
   const method = 'PATCH';
   const docPath = documentId ? `/${documentId}` : '';
-  const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/${collectionName}${docPath}`;
+  const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/threedaysfit/documents/${collectionName}${docPath}`;
 
   const requestBody = {
     fields: transformToFirestoreFormat(data),

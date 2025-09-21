@@ -1,6 +1,6 @@
 import { create } from "zustand";
+
 export interface IWorkoutSet {
-  exercise: string;
   weight: number;
   reps: number;
 }
@@ -23,15 +23,17 @@ export interface IGoogleUser {
 }
 
 export interface IUser {
-  googleData?: IGoogleUser;
-  data?: Record<string, IWorkoutSet[]>;
+  googleData?: Partial<IGoogleUser>;
+  access_token?: string;
+  dailyData?: Record<string, IWorkoutSet[]>;
 }
 
 export interface IUserState {
   user?: IUser;
   setUser: (user: IUser) => void;
   setGoogleData: (google: IUser["googleData"]) => void;
-  setDataProgress: (data: IUser["data"]) => void;
+  setDailyProgress: (data: IUser["dailyData"]) => void;
+  setAccessToken: (token: string) => void;
 }
 
 export const useUser = create<IUserState>((set) => ({
@@ -41,6 +43,7 @@ export const useUser = create<IUserState>((set) => ({
     set((state) => ({
       user: { ...state.user, googleData: google } as IUser,
     })),
-  setDataProgress: (data: IUser["data"]) =>
-    set((state) => ({ user: { ...state.user, data } as IUser })),
+  setDailyProgress: (data: IUser["dailyData"]) =>
+    set((state) => ({ user: { ...state.user, dailyData: data } as IUser })),
+  setAccessToken: (token: string) => set((state) => ({ user: { ...state.user, access_token: token } }))
 }));
