@@ -45,5 +45,5 @@ export const useUser = create<IUserState>((set) => ({
     })),
   setDailyProgress: (data: IUser["dailyData"]) =>
     set((state) => ({ user: { ...state.user, dailyData: data } as IUser })),
-  setAccessToken: (token: string) => set((state) => ({ user: { ...state.user, access_token: token } }))
+  setAccessToken: (token?: string) => set((state) => ({ user: { ...state.user, access_token: token } }))
 }));
