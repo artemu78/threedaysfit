@@ -14,8 +14,9 @@ const transformToFirestoreFormat = (data: { [key: string]: any }) => {
     if (value === null) return { nullValue: null };
     if (typeof value === 'string') return { stringValue: value };
     if (typeof value === 'boolean') return { booleanValue: value };
-    if (typeof value === 'number' && Number.isInteger(value)) return { integerValue: value };
-    if (typeof value === 'number') return { doubleValue: value };
+    if (typeof value === 'bigint') return { integerValue: value.toString() };
+    if (typeof value === 'number' && Number.isInteger(value)) return { integerValue: value.toString() };
+    if (typeof value === 'number' && !Number.isInteger(value)) return { doubleValue: value };
     if (value instanceof Date) return { timestampValue: value.toISOString() };
     if (Array.isArray(value)) return { arrayValue: { values: value.map(transformValue) } };
     if (typeof value === 'object') return { mapValue: { fields: transformToFirestoreFormat(value) } };
