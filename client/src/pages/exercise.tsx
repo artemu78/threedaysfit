@@ -1,11 +1,12 @@
-import { WorkoutDay } from "@shared/schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Play } from "lucide-react";
 import { getWorkoutDay } from "@/lib/workout-data";
 import ExerciseCard from "@/components/exercise-card";
+import { useUser } from "@/lib/store";
 
 export default function ExercisePage({ workoutId }: { workoutId: string }) {
   const workoutDay = getWorkoutDay(workoutId);
+  const { user } = useUser();
 
   if (!workoutDay) {
     return <div className="text-center text-muted-foreground">Workout not found</div>;
@@ -54,7 +55,12 @@ export default function ExercisePage({ workoutId }: { workoutId: string }) {
         </CardHeader>
         <CardContent className="space-y-6">
           {workoutDay.exercises.map((exercise, index) => (
-            <ExerciseCard key={index} exercise={exercise} index={index} />
+            <ExerciseCard 
+              key={index} 
+              exercise={exercise} 
+              exerciseIndex={index} 
+              dailyData={user?.dailyData?.[exercise.id.toString()] || []}
+            />
           ))}
         </CardContent>
       </Card>
