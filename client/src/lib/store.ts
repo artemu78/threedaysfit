@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { createStore } from 'zustand/vanilla';
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 export interface ISingleRep {
   isComplete: boolean;
@@ -37,22 +39,40 @@ export interface IUserState {
   setAccessToken: (token: string) => void;
 }
 
-export const useUser = create<IUserState>((set) => ({
-  user: undefined,
-  setUser: (user: IUser) => set({ user }),
-  setGoogleData: (google: IUser["googleData"]) =>
-    set((state) => ({
-      user: { ...state.user, googleData: google } as IUser,
-    })),
-  setDailyProgress: (exerciseId: string, exerciseSet: ISingleRep[]) =>
-    set((state) => ({
-      user: {
-        ...state.user,
-        dailyData: {
-          ...state.user?.dailyData,
-          [exerciseId]: exerciseSet,
+const paramStorage = {
+  getItem: (name: string): string | null => {
+    console.log('getItem', name);
+    return "some shit";
+  },
+  setItem: (name: string, value: string): void => {
+    console.log('setItem', name, value);
+  },
+  removeItem: (name: string): void => {
+    console.log('removeItem', name);
+  },
+};
+
+export const useUser = create<IUserState>()(persist(
+  (set) => ({
+    user: undefined,
+    setUser: (user: IUser) => set({ user }),
+    setGoogleData: (google: IUser["googleData"]) =>
+      set((state) => ({
+        user: { ...state.user, googleData: google } as IUser,
+      })),
+    setDailyProgress: (exerciseId: string, exerciseSet: ISingleRep[]) =>
+      set((state) => ({
+        user: {
+          ...state.user,
+          dailyData: {
+            ...state.user?.dailyData,
+            [exerciseId]: exerciseSet,
+          },
         },
-      },
-    })),
-  setAccessToken: (token?: string) => set((state) => ({ user: { ...state.user, access_token: token } }))
-}));
+      })),
+    setAccessToken: (token?: string) => set((state) => ({ user: { ...state.user, access_token: token } }))
+  }),
+  {
+    name: 'position-storage',
+    storage: createJSONStorage(() => paramStorage),
+  }));
