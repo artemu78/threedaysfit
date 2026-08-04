@@ -21,11 +21,10 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
-# Env files - but allow the build-time client env
+# Env files
 .env
 .env.local
 .env.*.local
-!client/.env.local
 
 # Docker
 Dockerfile

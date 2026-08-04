@@ -14,8 +14,12 @@ COPY client ./client
 COPY shared ./shared
 COPY vite.config.ts tsconfig.json postcss.config.js tailwind.config.ts components.json ./
 
-# Vite embeds VITE_* variables at build time, so provide the real env values here
-COPY client/.env.local ./client/.env.local
+# Vite embeds VITE_* variables at build time.
+# Provide defaults for local builds; override in CI/GitHub Actions via --build-arg.
+ARG VITE_GOOGLE_CLIENT_ID
+ARG VITE_FIRESTORE_PROJECT_ID
+ENV VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID:-107916257043-3aevfkqadmi1lr2en0do36spka72gjt5.apps.googleusercontent.com}
+ENV VITE_FIRESTORE_PROJECT_ID=${VITE_FIRESTORE_PROJECT_ID:-days-fit-471521}
 
 # Build only the static Vite output (server folder is intentionally excluded)
 RUN npx vite build

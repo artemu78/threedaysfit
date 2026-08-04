@@ -43,3 +43,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: 122323/threedaysfit:latest
+          build-args: |
+            VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+            VITE_FIRESTORE_PROJECT_ID=${{ secrets.VITE_FIRESTORE_PROJECT_ID }}
