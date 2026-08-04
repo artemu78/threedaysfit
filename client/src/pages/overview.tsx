@@ -12,7 +12,7 @@ export default function Overview() {
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto" data-testid="page-description">
           A complete strength training program designed for home gym equipment: bench press, barbell, and 2 dumbbells. 
-          Perfect for all fitness levels.
+          <br/>Perfect for all fitness levels.
         </p>
       </div>
 
