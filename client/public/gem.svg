@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="400" height="400" role="img"
+    aria-label="Glowing gem">
+    <defs>
+        <!-- Soft outer glow filter -->
+        <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="8" result="blur" />
+            <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+
+        <!-- Subtle inner shine -->
+        <radialGradient id="core" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95" />
+            <stop offset="30%" stop-color="#9be2ff" stop-opacity="0.9" />
+            <stop offset="70%" stop-color="#6ab3ff" stop-opacity="0.85" />
+            <stop offset="100%" stop-color="#2b7df0" stop-opacity="0.95" />
+        </radialGradient>
+
+        <!-- Facet gradients -->
+        <linearGradient id="facet1" x1="0" x2="1">
+            <stop offset="0%" stop-color="#b7f0ff" />
+            <stop offset="100%" stop-color="#3aa0ff" />
+        </linearGradient>
+
+        <linearGradient id="facet2" x1="1" x2="0">
+            <stop offset="0%" stop-color="#e9f8ff" />
+            <stop offset="100%" stop-color="#2d6fd6" />
+        </linearGradient>
+
+        <linearGradient id="facet3" x1="0" x2="1" y1="1" y2="0">
+            <stop offset="0%" stop-color="#d8f0ff" />
+            <stop offset="100%" stop-color="#1f55b8" />
+        </linearGradient>
+
+        <!-- Ground reflection -->
+        <linearGradient id="ground" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#2b7df0" stop-opacity="0.25" />
+            <stop offset="100%" stop-color="#2b7df0" stop-opacity="0" />
+        </linearGradient>
+
+        <!-- Tiny spec highlight -->
+        <radialGradient id="spark" cx="30%" cy="20%" r="10%">
+            <stop offset="0%" stop-color="#fff" stop-opacity="1" />
+            <stop offset="100%" stop-color="#fff" stop-opacity="0" />
+        </radialGradient>
+    </defs>
+
+    <!-- ground shadow / reflection -->
+    <ellipse cx="100" cy="170" rx="48" ry="10" fill="url(#ground)" opacity="0.9" />
+
+    <!-- glowing halo -->
+    <g filter="url(#glow)" opacity="0.95">
+        <ellipse cx="100" cy="98" rx="64" ry="36" fill="#2b7df0" opacity="0.08" />
+        <ellipse cx="100" cy="98" rx="88" ry="50" fill="#62b0ff" opacity="0.06" />
+    </g>
+
+    <!-- gem group -->
+    <g transform="translate(0,0)" filter="url(#glow)">
+        <!-- outer silhouette -->
+        <path d="M100 32 L156 80 L136 140 L100 164 L64 140 L44 80 Z"
+            fill="url(#core)" stroke="#dbeeff" stroke-opacity="0.65" stroke-width="1.5" />
+
+        <!-- top facets -->
+        <path d="M100 32 L130 68 L100 88 L70 68 Z" fill="url(#facet1)" stroke="#a8e6ff"
+            stroke-opacity="0.4" />
+        <path d="M100 88 L130 68 L156 80 L136 140 L100 164 Z" fill="url(#facet2)" stroke="#7fc6ff"
+            stroke-opacity="0.25" />
+        <path d="M100 88 L70 68 L44 80 L64 140 L100 164 Z" fill="url(#facet3)" stroke="#6fb0ff"
+            stroke-opacity="0.25" />
+
+        <!-- central lower facet dividing line -->
+        <path d="M100 88 L100 164" stroke="#bfe6ff" stroke-opacity="0.25" stroke-width="1" />
+
+        <!-- small highlights / micro-facets -->
+        <polygon points="108,50 114,62 100,70 92,58" fill="#ffffff" opacity="0.9" />
+        <circle cx="88" cy="52" r="6" fill="url(#spark)" opacity="0.85" />
+
+        <!-- crisp edge stroke -->
+        <path d="M100 32 L156 80 L136 140 L100 164 L64 140 L44 80 Z"
+            fill="none" stroke="#cfe9ff" stroke-width="1" stroke-linejoin="round"
+            stroke-opacity="0.55" />
+    </g>
+
+    <!-- small top sparkle -->
+    <path d="M142 44 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2 l6 -2 l2 -6 z" fill="#ffffff" opacity="0.9" />
+</svg>
