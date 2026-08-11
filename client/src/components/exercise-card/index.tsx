@@ -13,6 +13,7 @@ import {
     getTodayExerciseSets,
 } from "@/lib/local-storage";
 import { ISingleRep, useUser } from "@/lib/store";
+import { assetPath } from "@/lib/asset-path";
 
 
 interface ExerciseCardProps {
@@ -97,7 +98,7 @@ export default function ExerciseCard({ exercise, exerciseIndex, dailyData }: Exe
 
     useEffect(() => {
         // Create audio for timer completion
-        audioRef.current = new Audio("../sounds/1time_beep.mp3");
+        audioRef.current = new Audio(assetPath("sounds/1time_beep.mp3"));
 
         return () => {
             if (intervalRef.current) {
@@ -189,7 +190,7 @@ export default function ExerciseCard({ exercise, exerciseIndex, dailyData }: Exe
             <CardContent className="p-4">
                 <div className="flex flex-col lg:flex-row gap-4">
                     <img
-                        src={exercise.image || "/images/exercise_icon.gif"}
+                        src={assetPath(exercise.image || "images/exercise_icon.gif")}
                         alt={exercise.imageAlt}
                         className="w-full lg:w-48 object-cover rounded-lg flex-1"
                         data-testid={`exercise-image-${exerciseIndex}`}
@@ -208,7 +209,7 @@ export default function ExerciseCard({ exercise, exerciseIndex, dailyData }: Exe
                                 {exerciseIndex + 1}. {exercise.name}
                             </h4>
                             <img
-                                src="/images/external-link-symbol.png"
+                                src={assetPath("images/external-link-symbol.png")}
                                 alt="External link"
                                 className="w-4 h-4"
                             />
@@ -456,7 +457,7 @@ export default function ExerciseCard({ exercise, exerciseIndex, dailyData }: Exe
                                 >
                                     Watch Video Tutorial{" "}
                                     <img
-                                        src="/images/external-link-symbol.png"
+                                        src={assetPath("images/external-link-symbol.png")}
                                         alt="External link"
                                         className="w-4 h-4 ml-2"
                                     />

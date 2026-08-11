@@ -5,6 +5,7 @@ import { UserAvatar } from "@/components/user-avatar";
 import { writeToFirestore } from "@/lib/firestore-api";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Button } from "@/components/ui/button";
+import { assetPath } from "@/lib/asset-path";
 
 export const Login = () => {
   const { user, setGoogleData, setAccessToken } = useUser((state) => state);
@@ -61,7 +62,7 @@ export const Login = () => {
       ) : (
         <Button onClick={() => login()} variant={"outline"}>
           <img
-            src="/images/google_icon.png"
+            src={assetPath("images/google_icon.png")}
             style={{ height: "100%", width: "auto" }}
           />
           Login

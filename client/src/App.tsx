@@ -6,6 +6,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Router } from "@/components/router";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { Router as WouterRouter } from "wouter";
 
 // Import the functions you need from the SDKs you need
 // import { initializeApp } from "firebase/app";
@@ -33,16 +34,18 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <GoogleOAuthProvider clientId={clientId}>
-        <TooltipProvider>
-          <div className="min-h-screen bg-background">
-            <Header />
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-              <Router />
-            </main>
-            <Footer />
-          </div>
-          <Toaster />
-        </TooltipProvider>
+        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+          <TooltipProvider>
+            <div className="min-h-screen bg-background">
+              <Header />
+              <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <Router />
+              </main>
+              <Footer />
+            </div>
+            <Toaster />
+          </TooltipProvider>
+        </WouterRouter>
       </GoogleOAuthProvider>
     </QueryClientProvider>
   );

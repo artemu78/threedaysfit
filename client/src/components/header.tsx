@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { workoutProgram } from "@/lib/workout-data";
 import { Login } from "@/components/login";
+import { assetPath } from "@/lib/asset-path";
 
 const navigation = [
   { name: "Overview", path: "/" },
@@ -25,10 +26,10 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Left side: Logo + Navigation */}
           <div className="flex items-center space-x-6">
-            <a href="/">
+            <Link href="/">
               <div className="flex items-center space-x-2">
                 <img
-                  src="/images/logo.svg"
+                  src={assetPath("images/logo.svg")}
                   alt="Logo"
                   className="w-5 h-5 text-primary"
                 />
@@ -39,7 +40,7 @@ export default function Header() {
                   3 Days Fit
                 </h1>
               </div>
-            </a>
+            </Link>
 
             <nav className="hidden md:flex space-x-1">
               {navigation.map((item) => (
