@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { createStore } from 'zustand/vanilla';
 import { persist, createJSONStorage } from 'zustand/middleware'
 
 export interface ISingleRep {
@@ -39,19 +38,6 @@ export interface IUserState {
   setAccessToken: (token: string) => void;
 }
 
-const paramStorage = {
-  getItem: (name: string): string | null => {
-    console.log('getItem', name);
-    return "some shit";
-  },
-  setItem: (name: string, value: string): void => {
-    console.log('setItem', name, value);
-  },
-  removeItem: (name: string): void => {
-    console.log('removeItem', name);
-  },
-};
-
 export const useUser = create<IUserState>()(persist(
   (set) => ({
     user: undefined,
@@ -74,5 +60,5 @@ export const useUser = create<IUserState>()(persist(
   }),
   {
     name: 'position-storage',
-    storage: createJSONStorage(() => paramStorage),
+    storage: createJSONStorage(() => localStorage),
   }));
