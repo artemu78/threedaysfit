@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -eu
+
+REPO_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+REMOTE_NAME=origin
+REMOTE_URL=git@github.com:artemu78/threedaysfit.git
+
+if git -C "$REPO_DIR" remote get-url "$REMOTE_NAME" >/dev/null 2>&1; then
+  git -C "$REPO_DIR" remote set-url "$REMOTE_NAME" "$REMOTE_URL"
+else
+  git -C "$REPO_DIR" remote add "$REMOTE_NAME" "$REMOTE_URL"
+fi
+
+# Remove a separate push URL, if one exists, so fetch and push use this host.
+git -C "$REPO_DIR" config --unset-all "remote.$REMOTE_NAME.pushurl" 2>/dev/null || :
+
+printf 'Switched %s to GitHub:\n' "$REMOTE_NAME"
+git -C "$REPO_DIR" remote get-url --all "$REMOTE_NAME"
+printf 'Push URL: '
+git -C "$REPO_DIR" remote get-url --push "$REMOTE_NAME"
+

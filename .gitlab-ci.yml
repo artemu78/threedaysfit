@@ -1,0 +1,132 @@
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - when: never
+
+stages:
+  - test
+  - deploy
+
+.node-job:
+  image: node:22-bookworm
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm/
+  variables:
+    NPM_CONFIG_CACHE: "$CI_PROJECT_DIR/.npm"
+  before_script:
+    - npm ci --prefer-offline
+
+.test-rules:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+
+unit-tests:
+  extends:
+    - .node-job
+    - .test-rules
+  stage: test
+  interruptible: true
+  timeout: 10 minutes
+  script:
+    - npm test
+
+e2e-tests:
+  extends:
+    - .node-job
+    - .test-rules
+  stage: test
+  interruptible: true
+  timeout: 15 minutes
+  script:
+    - npx playwright install --with-deps chromium
+    - npm run test:e2e
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - playwright-report/
+      - test-results/
+
+deploy-pages:
+  extends: .node-job
+  stage: deploy
+  needs:
+    - unit-tests
+    - e2e-tests
+  interruptible: true
+  script:
+    # CI_PAGES_URL supports both GitLab's unique domains (/) and namespace
+    # domains (/project/), so Vite assets and Wouter routes get the right base.
+    - export VITE_BASE_PATH="$(node -e 'const p = new URL(process.env.CI_PAGES_URL).pathname; process.stdout.write(p.endsWith("/") ? p : p + "/")')"
+    - npm run build:client
+    - cp dist/public/index.html dist/public/404.html
+  pages:
+    publish: dist/public
+  environment:
+    name: gitlab-pages
+    url: $CI_PAGES_URL
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+publish-container:
+  image: docker:27-cli
+  stage: deploy
+  needs:
+    - job: unit-tests
+      optional: true
+    - job: e2e-tests
+      optional: true
+  services:
+    - name: docker:27-dind
+      alias: docker
+      command: ["--tls=false"]
+  variables:
+    DOCKER_HOST: "tcp://docker:2375"
+    DOCKER_TLS_CERTDIR: ""
+  resource_group: docker-hub
+  before_script:
+    - ': "${DOCKERHUB_USERNAME:?Configure DOCKERHUB_USERNAME in GitLab CI/CD variables}"'
+    - ': "${DOCKERHUB_TOKEN:?Configure DOCKERHUB_TOKEN in GitLab CI/CD variables}"'
+    - printf '%s' "$DOCKERHUB_TOKEN" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+    - docker run --privileged --rm tonistiigi/binfmt --install all
+    - docker buildx create --name multiarch --driver docker-container --use
+    - docker buildx inspect --bootstrap
+  script:
+    - |
+      IMAGE_NAME="$DOCKERHUB_USERNAME/threedaysfit"
+      set -- --tag "$IMAGE_NAME:sha-$CI_COMMIT_SHORT_SHA"
+      INSPECT_TAG="$IMAGE_NAME:sha-$CI_COMMIT_SHORT_SHA"
+
+      if [ -n "$CI_COMMIT_TAG" ]; then
+        RELEASE_VERSION="${CI_COMMIT_TAG#v}"
+        set -- "$@" --tag "$IMAGE_NAME:$RELEASE_VERSION"
+        INSPECT_TAG="$IMAGE_NAME:$RELEASE_VERSION"
+      else
+        set -- "$@" --tag "$IMAGE_NAME:latest"
+        INSPECT_TAG="$IMAGE_NAME:latest"
+      fi
+
+      docker buildx build \
+        --platform linux/amd64,linux/arm64 \
+        --build-arg VITE_GOOGLE_CLIENT_ID="$VITE_GOOGLE_CLIENT_ID" \
+        --build-arg VITE_FIRESTORE_PROJECT_ID="$VITE_FIRESTORE_PROJECT_ID" \
+        "$@" \
+        --push \
+        .
+
+      docker buildx imagetools inspect "$INSPECT_TAG"
+  after_script:
+    - docker buildx rm multiarch || true
+    - docker logout || true
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
